@@ -8,6 +8,8 @@ import {
   User,
   LogIn,
   UserPlus,
+  MessageSquare, // untuk Feedback
+  AlertCircle, // untuk Komplain
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
@@ -16,6 +18,8 @@ const menuItems = [
   { name: "Data Pelanggan", icon: <Box />, path: "/Pelanggan" },
   { name: "Users", icon: <Users />, path: "/customer" },
   { name: "Penjualan", icon: <ShoppingCart />, path: "/penjualan" },
+  { name: "Laporan Keuangan", icon: <BarChart2 />, path: "/Report" },
+  { name: "Feedback", icon: <MessageSquare />, path: "/Feedback" },
   { name: "Laporan", icon: <BarChart2 />, path: "/laporan" },
 ];
 
