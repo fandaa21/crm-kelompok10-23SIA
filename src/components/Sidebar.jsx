@@ -17,10 +17,8 @@ const menuItems = [
   { name: "Dashboard", icon: <LayoutDashboard />, path: "/" },
   { name: "Data Pelanggan", icon: <Box />, path: "/Pelanggan" },
   { name: "Users", icon: <Users />, path: "/customer" },
-  { name: "Penjualan", icon: <ShoppingCart />, path: "/penjualan" },
   { name: "Laporan Keuangan", icon: <BarChart2 />, path: "/Report" },
   { name: "Feedback", icon: <MessageSquare />, path: "/Feedback" },
-  { name: "Laporan", icon: <BarChart2 />, path: "/laporan" },
 ];
 
 const accountItems = [
@@ -36,7 +34,7 @@ const Sidebar = () => {
 
   return (
     <aside className="bg-white w-64 h-screen shadow-lg px-4 py-6 hidden md:block">
-      <div className="text-xl font-bold mb-8 text-purple-700">UMKM CRM</div>
+      <div className="text-xl font-bold mb-8 text-purple-700">CRM ARYADUTA</div>
       <nav className="space-y-1">
         {menuItems.map((item) => (
           <Link

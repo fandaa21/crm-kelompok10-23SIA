@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { CSVLink } from "react-csv"; // react-csv untuk export CSV
-import pdfMake from 'pdfmake/build/pdfmake'; // pdfmake untuk export PDF
+import pdfMaknpe from 'pdfmake/build/pdfmake'; // pdfmake untuk export PDF
 import pdfFonts from 'pdfmake/build/vfs_fonts'; // pdfmake fonts
 
 const dailyData = [
