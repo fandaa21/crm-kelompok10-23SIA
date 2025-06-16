@@ -42,13 +42,13 @@ export default function StaffShift() {
   return (
     <div className="p-6 space-y-6 bg-gray-50 min-h-screen">
       <h2 className="flex items-center gap-2 text-2xl font-bold text-gray-800">
-        <FaUserTie className="text-blue-600" /> Manajemen Staff & Shift
+        <FaUserTie className="text-amber-700" /> Manajemen Staff & Shift
       </h2>
 
       <p className="text-gray-600">Atur jadwal kerja setiap staf agar operasional berjalan lancar.</p>
 
       <table className="w-full bg-white rounded shadow text-left">
-        <thead className="bg-blue-100 text-blue-800">
+        <thead className="bg-amber-100 text-amber-800">
           <tr><th className="px-4 py-2">Nama</th><th>Posisi</th><th>Shift</th></tr>
         </thead>
         <tbody>
@@ -64,7 +64,7 @@ export default function StaffShift() {
 
       <div className="flex justify-end gap-2">
         <button onClick={() => setModal("add")} className="border px-4 py-2 rounded hover:bg-gray-100">Tambah Staff</button>
-        <button onClick={() => setModal("shift")} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 flex items-center gap-2">
+        <button onClick={() => setModal("shift")} className="bg-amber-700 text-white px-4 py-2 rounded hover:bg-amber-800 flex items-center gap-2">
           <FaCalendarAlt /> Atur Shift
         </button>
       </div>
@@ -93,11 +93,11 @@ function Modal({ title, children, onClose, onSave }) {
   return (
     <div className="fixed inset-0 backdrop-blur-sm bg-white/30 flex items-center justify-center z-50">
       <div className="bg-white p-6 rounded-xl w-full max-w-md shadow space-y-4">
-        <h3 className="text-xl font-bold text-blue-700">{title}</h3>
+        <h3 className="text-xl font-bold text-amber-700">{title}</h3>
         {children}
         <div className="flex justify-end gap-2">
           <button onClick={onClose} className="px-3 py-1 border rounded">Batal</button>
-          <button onClick={onSave} className="px-3 py-1 bg-blue-600 text-white rounded">Simpan</button>
+          <button onClick={onSave} className="px-3 py-1 bg-amber-700 text-white rounded">Simpan</button>
         </div>
       </div>
     </div>
