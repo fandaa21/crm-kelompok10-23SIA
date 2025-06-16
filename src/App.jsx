@@ -10,6 +10,8 @@ import ReportMoney from "./pages/ReportMoney";
 import Feedback from "./pages/Feedback";
 import StaffShift from "./Staff/StaffShift";
 import Reservation from "./pages/Reservation";
+import RoomManager from "./pages/RoomManager";
+import EventManager from "./pages/EventManager";
 
 export function App() {
   return (
@@ -26,6 +28,9 @@ export function App() {
         <Route path="*" element={<div>Page Not Found</div>} />
         <Route path="/Staff" element={<StaffShift />} />
         <Route path="/Reservation" element={<Reservation />} />
+         <Route path="/penjualan" element={<SalesManagement />} />
+         <Route path="/room" element={<RoomManager />} />
+         <Route path="/event" element={<EventManager />} />
       </Route>
     </Routes>
   );
