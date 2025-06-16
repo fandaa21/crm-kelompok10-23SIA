@@ -1,8 +1,11 @@
 import React, { useState } from "react";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { CSVLink } from "react-csv"; // react-csv untuk export CSV
-import pdfMaknpe from 'pdfmake/build/pdfmake'; // pdfmake untuk export PDF
-import pdfFonts from 'pdfmake/build/vfs_fonts'; // pdfmake fonts
+import {
+  LineChart, Line, XAxis, YAxis, CartesianGrid,
+  Tooltip, Legend, ResponsiveContainer
+} from 'recharts';
+import { CSVLink } from "react-csv";
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
 
 const dailyData = [
   { date: '01 Jun', pendapatan: 1200000, pengeluaran: 300000 },
@@ -35,9 +38,7 @@ const monthlyData = [
 export default function LaporanKeuangan() {
   const [activeTab, setActiveTab] = useState("harian");
 
-  // Export PDF menggunakan pdfMake
   const handleExportPDF = () => {
-    // Load fonts for pdfMake
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
     const documentDefinition = {
@@ -61,11 +62,9 @@ export default function LaporanKeuangan() {
       }
     };
 
-    // Generate and download the PDF
     pdfMake.createPdf(documentDefinition).download('laporan-keuangan.pdf');
   };
 
-  // Render chart
   const renderChart = (data, label) => (
     <div className="bg-white p-4 rounded shadow">
       <h2 className="text-lg font-medium mb-2">{label}</h2>
@@ -76,8 +75,8 @@ export default function LaporanKeuangan() {
           <YAxis />
           <Tooltip />
           <Legend />
-          <Line type="monotone" dataKey="pendapatan" stroke="#4ade80" name="Pendapatan" />
-          <Line type="monotone" dataKey="pengeluaran" stroke="#f87171" name="Pengeluaran" />
+          <Line type="monotone" dataKey="pendapatan" stroke="#a0522d" name="Pendapatan" />
+          <Line type="monotone" dataKey="pengeluaran" stroke="#8b4513" name="Pengeluaran" />
         </LineChart>
       </ResponsiveContainer>
     </div>
@@ -85,31 +84,46 @@ export default function LaporanKeuangan() {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-semibold mb-4">Laporan Keuangan</h1>
+      <h1 className="text-2xl font-semibold mb-4 text-yellow-900">Laporan Keuangan</h1>
 
       <div className="flex justify-end mb-4 gap-2">
-        <button onClick={handleExportPDF} className="bg-red-500 text-white px-4 py-2 rounded">Export PDF</button>
-        {/* Export Excel to CSV */}
+        <button
+          onClick={handleExportPDF}
+          className="bg-yellow-800 text-white px-4 py-2 rounded hover:bg-yellow-900"
+        >
+          Export PDF
+        </button>
+
         <CSVLink data={dailyData} filename="laporan-keuangan.csv">
-          <button className="bg-green-500 text-white px-4 py-2 rounded">Export CSV</button>
+          <button className="bg-yellow-700 text-white px-4 py-2 rounded hover:bg-yellow-800">
+            Export CSV
+          </button>
         </CSVLink>
       </div>
 
       <div className="flex gap-2 mb-4">
         <button
-          className={`px-4 py-2 rounded ${activeTab === 'harian' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+          className={`px-4 py-2 rounded ${activeTab === 'harian'
+            ? 'bg-yellow-700 text-white'
+            : 'bg-yellow-100 text-yellow-900'}`}
           onClick={() => setActiveTab("harian")}
         >
           Harian
         </button>
+
         <button
-          className={`px-4 py-2 rounded ${activeTab === 'mingguan' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+          className={`px-4 py-2 rounded ${activeTab === 'mingguan'
+            ? 'bg-yellow-700 text-white'
+            : 'bg-yellow-100 text-yellow-900'}`}
           onClick={() => setActiveTab("mingguan")}
         >
           Mingguan
         </button>
+
         <button
-          className={`px-4 py-2 rounded ${activeTab === 'bulanan' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+          className={`px-4 py-2 rounded ${activeTab === 'bulanan'
+            ? 'bg-yellow-700 text-white'
+            : 'bg-yellow-100 text-yellow-900'}`}
           onClick={() => setActiveTab("bulanan")}
         >
           Bulanan
