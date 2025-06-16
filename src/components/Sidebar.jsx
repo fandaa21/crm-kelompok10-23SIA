@@ -8,6 +8,8 @@ import {
   User,
   LogIn,
   UserPlus,
+  Bed,
+  Presentation,
 } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 
@@ -16,6 +18,9 @@ const menuItems = [
   { name: 'Produk', icon: <Box />, path: '/produk' },
    { name: 'Penjualan', icon: <ShoppingCart />, path: '/penjualan' },
   { name: 'Laporan', icon: <BarChart2 />, path: '/laporan' },
+  { name: 'Management Kamar ', icon: <Bed/>, path: '/room' },
+  { name: 'Management Event ', icon: <Presentation />, path: '/event' },
+  
 ]
 
 const accountItems = [

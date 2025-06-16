@@ -4,6 +4,8 @@ import Dashboard from "./Pages/Dashboard";
 import SalesManagement from "./pages/SalesManagement";
 import Login from "./pages/Signin"; 
 import Signup from "./pages/Signup";
+import RoomManager from "./pages/RoomManager";
+import EventManager from "./pages/EventManager";
 
 export function App() {
   return (
@@ -13,6 +15,8 @@ export function App() {
       <Route element={<MainLayout />}>
         <Route path="/" element={<Dashboard />} />
          <Route path="/penjualan" element={<SalesManagement />} />
+         <Route path="/room" element={<RoomManager />} />
+         <Route path="/event" element={<EventManager />} />
       </Route>
     </Routes>
   );
