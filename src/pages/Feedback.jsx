@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { FaStar } from "react-icons/fa"; // Untuk rating bintang
-import { CSVLink } from "react-csv"; // Untuk ekspor data ke CSV
+import { FaStar } from "react-icons/fa";
+import { CSVLink } from "react-csv";
 
 export default function FeedbackKomplain() {
   const [reviews, setReviews] = useState([
@@ -34,14 +34,12 @@ export default function FeedbackKomplain() {
   const [category, setCategory] = useState("");
   const [comment, setComment] = useState("");
 
-  // Formulir tanggapan
   const handleFormSubmit = (e) => {
     e.preventDefault();
     alert(`Tanggapan terkirim: ${response}`);
     setResponse("");
   };
 
-  // Generate rating stars
   const generateStars = (rating) => {
     const stars = [];
     for (let i = 0; i < 5; i++) {
@@ -54,11 +52,11 @@ export default function FeedbackKomplain() {
 
   return (
     <div className="p-6 space-y-8">
-      <h1 className="text-3xl font-semibold mb-6 text-center">Feedback & Komplain</h1>
+      <h1 className="text-3xl font-semibold mb-6 text-center text-amber-700">Feedback & Komplain</h1>
 
       {/* Daftar Ulasan Tamu */}
       <div>
-        <h2 className="text-2xl font-semibold mb-4">Daftar Ulasan Tamu</h2>
+        <h2 className="text-2xl font-semibold mb-4 text-amber-700">Daftar Ulasan Tamu</h2>
         <div className="space-y-4">
           {reviews.map((review) => (
             <div
@@ -81,7 +79,7 @@ export default function FeedbackKomplain() {
 
       {/* Formulir Tanggapan / Tindakan */}
       <div>
-        <h2 className="text-2xl font-semibold mb-4">Formulir Tanggapan / Tindakan</h2>
+        <h2 className="text-2xl font-semibold mb-4 text-amber-700">Formulir Tanggapan / Tindakan</h2>
         <form onSubmit={handleFormSubmit} className="space-y-6">
           <div>
             <label htmlFor="response" className="block font-medium mb-2">Tanggapan:</label>
@@ -89,7 +87,7 @@ export default function FeedbackKomplain() {
               id="response"
               value={response}
               onChange={(e) => setResponse(e.target.value)}
-              className="w-full p-4 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-4 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-amber-500"
               rows="4"
               placeholder="Tulis tanggapan Anda disini..."
               required
@@ -102,7 +100,7 @@ export default function FeedbackKomplain() {
               id="category"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="w-full p-4 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-4 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-amber-500"
               required
             >
               <option value="">Pilih Kategori</option>
@@ -118,7 +116,7 @@ export default function FeedbackKomplain() {
               id="comment"
               value={comment}
               onChange={(e) => setComment(e.target.value)}
-              className="w-full p-4 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-4 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-amber-500"
               rows="4"
               placeholder="Masukkan komentar Anda disini..."
               required
@@ -127,7 +125,7 @@ export default function FeedbackKomplain() {
 
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-all duration-200"
+            className="w-full bg-amber-600 text-white px-6 py-3 rounded-lg hover:bg-amber-700 transition-all duration-200"
           >
             Kirim Tanggapan
           </button>
