@@ -1,71 +1,75 @@
 import {
   LayoutDashboard,
-  Users, // untuk pelanggan
-  ShoppingCart, // untuk penjualan
-  Box, // untuk produk
-  BarChart2, // untuk laporan
-  Settings, // untuk pengaturan akun
-  User,
+  Users,
+  ShoppingCart,
+  Box,
+  BarChart2,
+  Settings,
   LogIn,
   UserPlus,
-  MessageSquare, // untuk Feedback
-  AlertCircle, // untuk Komplain
+  MessageSquare,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 const menuItems = [
-  { name: "Dashboard", icon: <LayoutDashboard />, path: "/" },
-  { name: "Data Pelanggan", icon: <Box />, path: "/Pelanggan" },
-  { name: "Users", icon: <Users />, path: "/customer" },
-  { name: "Laporan Keuangan", icon: <BarChart2 />, path: "/Report" },
-  { name: "Feedback", icon: <MessageSquare />, path: "/Feedback" },
+  { name: "Dashboard", icon: <LayoutDashboard size={18} />, path: "/" },
+  { name: "Data Pelanggan", icon: <Box size={18} />, path: "/Pelanggan" },
+  { name: "Users", icon: <Users size={18} />, path: "/customer" },
+  { name: "Laporan Keuangan", icon: <BarChart2 size={18} />, path: "/Report" },
+  { name: "Feedback", icon: <MessageSquare size={18} />, path: "/Feedback" },
 ];
 
 const accountItems = [
-  { name: "Pengaturan Akun", icon: <Settings />, path: "/akun" },
-  { name: "Sign In", icon: <LogIn />, path: "/signin" },
-  { name: "Sign Up", icon: <UserPlus />, path: "/signup" },
+  { name: "Pengaturan Akun", icon: <Settings size={18} />, path: "/akun" },
+  { name: "Sign In", icon: <LogIn size={18} />, path: "/signin" },
+  { name: "Sign Up", icon: <UserPlus size={18} />, path: "/signup" },
 ];
 
 const Sidebar = () => {
   const location = useLocation();
-
   const isActive = (path) => location.pathname === path;
 
   return (
-    <aside className="bg-white w-64 h-screen shadow-lg px-4 py-6 hidden md:block">
-      <div className="text-xl font-bold mb-8 text-purple-700">CRM ARYADUTA</div>
+    <aside className="bg-white w-64 h-screen shadow-lg px-5 py-8 hidden md:block border-r border-gray-100">
+      <div className="text-2xl font-bold mb-10 text-indigo-700 tracking-wide">
+        Aryaduta CRM
+      </div>
+
+      {/* Menu Utama */}
       <nav className="space-y-1">
         {menuItems.map((item) => (
           <Link
             key={item.name}
             to={item.path}
-            className={`flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-purple-100 transition ${
+            className={`flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-indigo-100 transition-all duration-200 ${
               isActive(item.path)
-                ? "bg-purple-200 text-purple-800 font-semibold"
+                ? "bg-indigo-200 text-indigo-800 font-semibold"
                 : "text-gray-700"
             }`}
           >
-            <span className="w-5 h-5">{item.icon}</span>
-            {item.name}
+            {item.icon}
+            <span className="text-sm">{item.name}</span>
           </Link>
         ))}
       </nav>
 
-      <div className="mt-8 text-xs font-semibold text-gray-500">AKUN</div>
+      {/* Section Akun */}
+      <div className="mt-10 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+        Akun
+      </div>
       <nav className="mt-2 space-y-1">
         {accountItems.map((item) => (
           <Link
             key={item.name}
             to={item.path}
-            className={`flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-purple-100 transition ${
+            className={`flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-indigo-100 transition-all duration-200 ${
               isActive(item.path)
-                ? "bg-purple-200 text-purple-800 font-semibold"
+                ? "bg-indigo-200 text-indigo-800 font-semibold"
                 : "text-gray-700"
             }`}
           >
-            <span className="w-5 h-5">{item.icon}</span>
-            {item.name}
+            {item.icon}
+            <span className="text-sm">{item.name}</span>
           </Link>
         ))}
       </nav>
