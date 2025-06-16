@@ -4,6 +4,8 @@ import Dashboard from "./Pages/Dashboard";
 import CustomerManagement from "./pages/CustomerManagement";
 import ReportMoney from "./pages/ReportMoney";
 import Feedback from "./pages/Feedback";
+import StaffShift from "./Staff/StaffShift";
+import Reservation from "./pages/Reservation";
 
 export function App() {
   return (
@@ -13,6 +15,9 @@ export function App() {
         <Route path="/customer" element={<CustomerManagement />} />
         <Route path="/Report" element={<ReportMoney />} />
         <Route path="/Feedback" element={<Feedback />} />
+        <Route path="*" element={<div>Page Not Found</div>} />
+        <Route path="/Staff" element={<StaffShift />} />
+        <Route path="/Reservation" element={<Reservation />} />
       </Route>
     </Routes>
   );

@@ -10,6 +10,8 @@ import {
   UserPlus,
   MessageSquare, // untuk Feedback
   AlertCircle,   // untuk Komplain
+  UserCog,        // untuk Staff (ikon tambahan)
+  CalendarCheck, // ✅ untuk Reservasi
 } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 
@@ -19,6 +21,11 @@ const menuItems = [
   { name: 'Laporan Keuangan', icon: <BarChart2 />, path: '/Report' },
   { name: 'Feedback', icon: <MessageSquare />, path: '/Feedback' },
   { name: 'Users', icon: <Users />, path: '/customer' },
+  { name: 'Penjualan', icon: <ShoppingCart />, path: '/penjualan' },
+  { name: 'Komplain', icon: <AlertCircle />, path: '/komplain' },
+  { name: 'Staff & Shift', icon: <UserCog />, path: '/Staff' },
+  { name: 'Reservasi', icon: <CalendarCheck />, path: '/Reservation' },
+
 ]
 
 const accountItems = [
