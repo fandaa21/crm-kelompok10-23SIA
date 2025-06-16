@@ -22,7 +22,6 @@ const menuItems = [
   { name: 'Feedback', icon: <MessageSquare />, path: '/Feedback' },
   { name: 'Users', icon: <Users />, path: '/customer' },
   { name: 'Penjualan', icon: <ShoppingCart />, path: '/penjualan' },
-  { name: 'Komplain', icon: <AlertCircle />, path: '/komplain' },
   { name: 'Staff & Shift', icon: <UserCog />, path: '/Staff' },
   { name: 'Reservasi', icon: <CalendarCheck />, path: '/Reservation' },
 
