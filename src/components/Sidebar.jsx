@@ -7,7 +7,6 @@ import {
   Settings,
   LogIn,
   UserPlus,
-  MessageSquare,
   Bed,
   Presentation,
   MessageSquare, // untuk Feedback
@@ -22,15 +21,11 @@ const menuItems = [
   { name: 'Produk', icon: <Box />, path: '/produk' },
   { name: 'Laporan Keuangan', icon: <BarChart2 />, path: '/Report' },
   { name: 'Feedback', icon: <MessageSquare />, path: '/Feedback' },
-  { name: 'Users', icon: <Users />, path: '/customer' },
-  { name: 'Penjualan', icon: <ShoppingCart />, path: '/penjualan' },
-  { name: 'Komplain', icon: <AlertCircle />, path: '/komplain' },
-  { name: 'Staff & Shift', icon: <UserCog />, path: '/Staff' },
   { name: 'Reservasi', icon: <CalendarCheck />, path: '/Reservation' },
   { name: 'Penjualan', icon: <ShoppingCart />, path: '/penjualan' },
-  { name: 'Laporan', icon: <BarChart2 />, path: '/laporan' },
   { name: 'Management Kamar ', icon: <Bed/>, path: '/room' },
   { name: 'Management Event ', icon: <Presentation />, path: '/event' },
+  { name: 'User ', icon: <Users />, path: '/users' },
   
 ]
 
