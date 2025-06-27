@@ -32,6 +32,13 @@ export function App() {
          <Route path="/users" element={<User />} />
          <Route path="/event" element={<EventManager />} />
       </Route>
+
+      <Route element={<LayoutUser />}>
+      <Route path="/User" element={<UserDashboard />} />
+      <Route path="/User/Reservasi" element={<RoomReservation />} />
+      </Route>
+
+      <Route path="/web" element={<UserPage />} />
     </Routes>
   );
 }
