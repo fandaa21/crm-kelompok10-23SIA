@@ -19,6 +19,13 @@ export function App() {
         <Route path="/Staff" element={<StaffShift />} />
         <Route path="/Reservation" element={<Reservation />} />
       </Route>
+
+      <Route element={<LayoutUser />}>
+      <Route path="/User" element={<UserDashboard />} />
+      <Route path="/User/Reservasi" element={<RoomReservation />} />
+      </Route>
+
+      <Route path="/web" element={<UserPage />} />
     </Routes>
   );
 }
