@@ -1,20 +1,31 @@
 import React from 'react';
+import { Menu } from 'lucide-react'; // icon untuk hamburger menu
 
 const HeaderUserWeb = () => {
   return (
-    <header className="bg-white px-6 py-4 shadow flex items-center justify-between">
-      <div className="flex items-center space-x-3">
+    <header className="absolute top-0 left-0 w-full z-50 px-6 py-4 flex items-center justify-between bg-transparent">
+      <div className="flex items-center space-x-4">
+        {/* Logo */}
         <div className="text-3xl font-serif italic font-bold text-[#A86844]">A</div>
-        <nav className="hidden md:flex space-x-6 text-[#4e3b2f] font-medium">
-          <a href="#" className="hover:text-[#A86844]">Home</a>
-          <a href="#" className="hover:text-[#A86844]">About Us</a>
-          <a href="#" className="hover:text-[#A86844]">Check In - Check Out</a>
-          <a href="#" className="hover:text-[#A86844]">Blog</a>
+
+        {/* Navigation */}
+        <nav className="hidden md:flex space-x-6 text-white font-semibold text-sm tracking-wide">
+          <a href="#" className="hover:text-[#A86844]">HOME</a>
+          <a href="#" className="hover:text-[#A86844]">ABOUT US</a>
+          <a href="#" className="hover:text-[#A86844]">CHECK IN - CHECK OUT</a>
+          <a href="#" className="hover:text-[#A86844]">BLOG</a>
         </nav>
       </div>
-      <button className="bg-[#A86844] text-white px-4 py-2 rounded-full shadow hover:bg-[#92593c]">
-        Get Started
-      </button>
+
+      {/* Right Buttons */}
+      <div className="flex items-center space-x-4">
+        <button className="bg-[#f7f1e9] text-[#4e3b2f] px-5 py-2 rounded-full font-semibold text-xs shadow hover:bg-[#ebdfd4]">
+          LOG-IN
+        </button>
+        <button className="md:hidden text-white">
+          <Menu size={24} />
+        </button>
+      </div>
     </header>
   );
 };

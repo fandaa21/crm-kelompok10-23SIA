@@ -1,7 +1,6 @@
 import {
   LayoutDashboard,
   Users,
-  ShoppingCart,
   Box,
   BarChart2,
   Settings,
@@ -9,28 +8,21 @@ import {
   UserPlus,
   Bed,
   Presentation,
-  MessageSquare, // untuk Feedback
-  AlertCircle,   // untuk Komplain
-  UserCog,        // untuk Staff (ikon tambahan)
-  CalendarCheck, // ✅ untuk Reservasi
+  MessageSquare,
+  CalendarCheck,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
+// Menu utama setelah pembersihan
 const menuItems = [
   { name: 'Dashboard', icon: <LayoutDashboard />, path: '/' },
   { name: 'Produk', icon: <Box />, path: '/produk' },
   { name: 'Laporan Keuangan', icon: <BarChart2 />, path: '/Report' },
   { name: 'Feedback', icon: <MessageSquare />, path: '/Feedback' },
-  { name: 'Users', icon: <Users />, path: '/customer' },
-  { name: 'Penjualan', icon: <ShoppingCart />, path: '/penjualan' },
-  { name: 'Staff & Shift', icon: <UserCog />, path: '/Staff' },
   { name: 'Reservasi', icon: <CalendarCheck />, path: '/Reservation' },
-  { name: 'Penjualan', icon: <ShoppingCart />, path: '/penjualan' },
-  { name: 'Management Kamar ', icon: <Bed/>, path: '/room' },
-  { name: 'Management Event ', icon: <Presentation />, path: '/event' },
-  { name: 'User ', icon: <Users />, path: '/users' },
-  
-]
+  { name: 'Management Kamar', icon: <Bed />, path: '/room' },
+  { name: 'Management Event', icon: <Presentation />, path: '/event' },
+];
 
 const accountItems = [
   { name: "Pengaturan Akun", icon: <Settings size={18} />, path: "/akun" },
@@ -45,7 +37,11 @@ const Sidebar = () => {
   return (
     <aside className="bg-white w-64 h-screen shadow-lg px-5 py-8 hidden md:block border-r border-gray-100">
       <div className="text-2xl font-bold mb-10 text-indigo-700 tracking-wide">
-        Aryaduta CRM
+        <img
+          src="src/assets/ardut.png"
+          alt="Logo"
+          className="w-52 mx-auto"
+        />
       </div>
 
       {/* Menu Utama */}

@@ -8,12 +8,10 @@ import Login from "./pages/Signin";
 import Signup from "./pages/Signup";
 import ReportMoney from "./pages/ReportMoney";
 import Feedback from "./pages/Feedback";
-import StaffShift from "./Staff/StaffShift";
-import Reservation from "./pages/Reservation";
-import RoomManager from "./pages/RoomManager";
-import EventManager from "./pages/EventManager";
-import User from "./pages/User";
-
+import UserDashboard from "./User/UserDashboard";
+import LayoutUser from "./User/component/LayoutUser";
+import RoomReservation from "./User/RoomReservation";
+import UserPage from "./User/UserPage";
 
 export function App() {
   return (
@@ -23,16 +21,11 @@ export function App() {
       <Route element={<MainLayout />}>
         <Route path="/" element={<Dashboard />} />
         <Route path="/customer" element={<CustomerManagement />} />
+        <Route path="/penjualan" element={<SalesManagement />} />
         <Route path="/pelanggan" element={<Customers />} />
+        <Route path="/Report" element={<ReportMoney />} />
         <Route path="/Feedback" element={<Feedback />} />
-        <Route path="*" element={<div>Page Not Found</div>} />
-        <Route path="/Reservation" element={<Reservation />} />
-         <Route path="/penjualan" element={<SalesManagement />} />
-         <Route path="/room" element={<RoomManager />} />
-         <Route path="/users" element={<User />} />
-         <Route path="/event" element={<EventManager />} />
       </Route>
-
       <Route element={<LayoutUser />}>
       <Route path="/User" element={<UserDashboard />} />
       <Route path="/User/Reservasi" element={<RoomReservation />} />
