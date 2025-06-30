@@ -25,9 +25,7 @@ const menuItems = [
 ];
 
 const accountItems = [
-  { name: "Pengaturan Akun", icon: <Settings size={18} />, path: "/akun" },
   { name: "Sign In", icon: <LogIn size={18} />, path: "/signin" },
-  { name: "Sign Up", icon: <UserPlus size={18} />, path: "/signup" },
 ];
 
 const Sidebar = () => {

@@ -1,23 +1,30 @@
 import { Route, Routes } from "react-router-dom";
+
+// Layout dan halaman admin
 import MainLayout from "./components/MainLayout";
 import Dashboard from "./pages/Dashboard";
 import CustomerManagement from "./pages/CustomerManagement";
 import SalesManagement from "./pages/SalesManagement";
-import Customers from "./pages/Customers"; 
-import Login from "./pages/Signin"; 
-import Signup from "./pages/Signup";
+import Customers from "./pages/Customers";
 import ReportMoney from "./pages/ReportMoney";
 import Feedback from "./pages/Feedback";
-import UserDashboard from "./User/UserDashboard";
+
+// Halaman autentikasi
+import Login from "./pages/Signin";
+
+// Layout dan halaman untuk User Website
 import LayoutUser from "./User/component/LayoutUser";
+import UserDashboard from "./User/UserDashboard";
 import RoomReservation from "./User/RoomReservation";
 import UserPage from "./User/UserPage";
 
 export function App() {
   return (
     <Routes>
+      {/* Halaman login */}
       <Route path="/signin" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
+
+      {/* Layout dan halaman admin */}
       <Route element={<MainLayout />}>
         <Route path="/" element={<Dashboard />} />
         <Route path="/customer" element={<CustomerManagement />} />
@@ -26,13 +33,17 @@ export function App() {
         <Route path="/Report" element={<ReportMoney />} />
         <Route path="/Feedback" element={<Feedback />} />
       </Route>
+
+      {/* Layout dan halaman user */}
       <Route element={<LayoutUser />}>
-      <Route path="/User" element={<UserDashboard />} />
-      <Route path="/User/Reservasi" element={<RoomReservation />} />
+        <Route path="/User" element={<UserDashboard />} />
+        <Route path="/User/Reservasi" element={<RoomReservation />} />
       </Route>
 
+      {/* Halaman publik website */}
       <Route path="/web" element={<UserPage />} />
     </Routes>
   );
 }
+
 export default App;

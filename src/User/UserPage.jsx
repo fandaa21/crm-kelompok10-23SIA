@@ -1,12 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 import HeaderUserWeb from '../User/component/HeaderUserWeb';
 import FooterUserWeb from '../User/component/FooterUserWeb';
 import { HiOutlineSearch, HiOutlineUser, HiOutlineCalendar } from 'react-icons/hi';
+import MembershipForm from './MembershipForm';
+
+const MembershipCard = ({ title, description, benefits, price, styleClass, onChoose }) => (
+  <div className={`rounded-xl p-6 shadow-md w-full max-w-sm ${styleClass}`}>
+    <h3 className="text-xl font-bold text-center mb-2">{title}</h3>
+    <p className="text-sm text-center mb-4">{description}</p>
+    <h4 className="font-semibold mb-2">What's included</h4>
+    <ul className="text-sm mb-6 list-disc list-inside space-y-1">
+      {benefits.map((benefit, index) => (
+        <li key={index}>{benefit}</li>
+      ))}
+    </ul>
+    {price && <div className="text-center text-lg font-bold mb-4">{price}</div>}
+    <button
+      className="w-full bg-[#3d2b1f] text-white py-2 rounded-full font-semibold hover:bg-[#2c2117] transition"
+      onClick={onChoose}
+    >
+      Choose
+    </button>
+  </div>
+);
 
 const UserPage = () => {
+  const [selectedLevel, setSelectedLevel] = useState(null);
+  const [showForm, setShowForm] = useState(false);
+
+  const handleChoose = (level) => {
+    setSelectedLevel(level);
+    setShowForm(true); // tampilkan form saat pilih membership
+  };
+
   return (
     <div className="bg-[#f8f2e9] text-[#4e3b2f] font-sans">
-
       <HeaderUserWeb />
 
       {/* HERO SECTION */}
@@ -50,44 +78,68 @@ const UserPage = () => {
       </div>
 
       {/* FITUR / PROMO */}
-      <section className="py-12 px-6 md:px-16">
-        <h2 className="text-3xl font-bold mb-6 text-[#4e3b2f]">Kenyamanan & Kemewahan dalam Satu Pengalaman</h2>
-        <div className="grid md:grid-cols-4 gap-6">
-          <img className="rounded-xl object-cover h-48 w-full" src="https://source.unsplash.com/600x400/?hotel,villa" alt="Fitur 1" />
-          <img className="rounded-xl object-cover h-48 w-full" src="https://source.unsplash.com/601x400/?resort,swimming-pool" alt="Fitur 2" />
-          <img className="rounded-xl object-cover h-48 w-full" src="https://source.unsplash.com/602x400/?beach,resort" alt="Fitur 3" />
-          <div className="bg-[#A86844] text-white rounded-xl p-6 flex items-center justify-center text-center">
-            <p className="font-bold text-lg">Kami Memberikan Hasil Layanan Terbaik Untuk Penginapan Anda</p>
+      <section className="py-12 px-6 md:px-16 bg-[#f5f1ea]">
+        <div className="mb-8">
+          <p className="uppercase text-sm text-[#A86844] font-semibold tracking-wide">Fitur</p>
+          <h2 className="text-3xl font-bold text-[#4e3b2f] leading-snug mt-1">
+            Kenyamanan & Kemewahan <br />
+            dalam Satu Pengalaman
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+          <img src="src/assets/image 1.png" alt="Fitur 1" className="rounded-[30px] object-cover w-[370px] h-[281px]" />
+          <div className="flex flex-col w-[468px]">
+            <img src="src/assets/image 2.png" alt="Fitur 2" className="object-cover w-full h-[412px] rounded-tr-[80px]" />
+            <div className="bg-[#8F5835] text-white py-6 px-6 text-sm font-semibold leading-relaxed w-full h-[152px]">
+              Kami Memberikan Hasil <br /> Layanan Terbaik Untuk <br /> Penginapan Anda
+            </div>
           </div>
+          <img src="src/assets/image 3.png" alt="Fitur 3" className="rounded-[30px] object-cover w-[370px] h-[281px] mt-[29px]" />
         </div>
       </section>
 
-      {/* SERVICES & PACKAGES */}
-      <section className="bg-[#4e3b2f] text-[#f8f2e9] py-12 px-6 md:px-16">
-        <h2 className="text-3xl font-bold mb-8">Services & Packages</h2>
-        <div className="grid md:grid-cols-3 gap-6">
-          <div className="bg-white text-[#4e3b2f] rounded-xl shadow-lg p-6 flex flex-col">
-            <h3 className="text-xl font-bold mb-2">Single Size</h3>
-            <p className="text-sm mb-4">2 loads per week, up to 10 lbs per load</p>
-            <p className="mt-auto font-bold">$10 / per month</p>
-            <button className="mt-3 bg-[#A86844] text-white py-2 rounded-md hover:bg-[#92593c]">Choose</button>
+       {/* MEMBERSHIP SECTION */}
+       {!showForm ? (
+        <section id="membership" className="bg-[#3d2b1f] text-white py-16 px-4 flex flex-col items-center">
+          <div className="text-center mb-10">
+            <h2 className="text-sm tracking-widest text-[#d4bba2] mb-2 uppercase">Services</h2>
+            <h1 className="text-4xl md:text-5xl font-bold">Membership</h1>
+            <p className="text-[#d4bba2] mt-2">Choose the plan that's right for you.</p>
           </div>
-          <div className="bg-[#A86844] text-white rounded-xl shadow-lg p-6 flex flex-col">
-            <h3 className="text-xl font-bold mb-2">Couples Size</h3>
-            <p className="text-sm mb-4">4 loads per week, up to 12 lbs per load, Special garments, Pickup & drop off</p>
-            <p className="mt-auto font-bold">$20 / per month</p>
-            <button className="mt-3 bg-white text-[#A86844] py-2 rounded-md hover:bg-[#f3e9e5]">Choose</button>
+          <div className="flex flex-col lg:flex-row gap-8 justify-center items-stretch w-full max-w-6xl">
+            <MembershipCard
+              title="MEMBER"
+              description="For new guests or those staying 1-2 times."
+              benefits={["Welcome gift", "Access to public promotions", "Exclusive info from newsletter"]}
+              price="FREE"
+              styleClass="bg-white text-[#3d2b1f]"
+              onChoose={() => handleChoose("MEMBER")}
+            />
+            <MembershipCard
+              title="PREFERRED"
+              description="For guests with ≥3 stays or spending ≥Rp 5 million."
+              benefits={["Special member discounts", "Reward points", "Seasonal promotions", "Airport transfer"]}
+              price="Contact Us"
+              styleClass="bg-[#5a3d2e] text-white scale-105"
+              onChoose={() => handleChoose("PREFERRED")}
+            />
+            <MembershipCard
+              title="ELITE"
+              description="For guests with ≥6 stays or spending ≥Rp 10 million."
+              benefits={["Early check-in/out", "Room upgrade", "Priority concierge", "Exclusive events", "+20% bonus points"]}
+              price="Contact Us"
+              styleClass="bg-white text-[#3d2b1f]"
+              onChoose={() => handleChoose("ELITE")}
+            />
           </div>
-          <div className="bg-white text-[#4e3b2f] rounded-xl shadow-lg p-6 flex flex-col">
-            <h3 className="text-xl font-bold mb-2">Family Size</h3>
-            <p className="text-sm mb-4">6 loads per week, up to 15 lbs per load, Free detergent samples</p>
-            <p className="mt-auto font-bold">$30 / per month</p>
-            <button className="mt-3 bg-[#A86844] text-white py-2 rounded-md hover:bg-[#92593c]">Choose</button>
-          </div>
-        </div>
-      </section>
+        </section>
+      ) : (
+        <MembershipForm />
+      )}
 
-      {/* CTA BANNER */}
+
+      {/* FOOTER SECTION */}
       <section className="py-12 px-6 md:px-16">
         <div className="relative bg-[#A86844] rounded-xl overflow-hidden text-white">
           <img
@@ -109,7 +161,7 @@ const UserPage = () => {
 
       <FooterUserWeb />
     </div>
-  )
-}
+  );
+};
 
 export default UserPage;
