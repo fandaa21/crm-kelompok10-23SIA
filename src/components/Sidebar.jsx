@@ -1,23 +1,26 @@
 import {
   LayoutDashboard,
-  Users,         // untuk pelanggan
-  ShoppingCart,  // untuk penjualan
-  Box,           // untuk produk
-  BarChart2,     // untuk laporan
-  Settings,      // untuk pengaturan akun
-  User,
+  Users,
+  Box,
+  BarChart2,
+  Settings,
   LogIn,
   UserPlus,
   MessageSquare, // untuk Feedback
   AlertCircle,   // untuk Komplain
   UserCog,        // untuk Staff (ikon tambahan)
   CalendarCheck, // ✅ untuk Reservasi
+  Bed,
+  Presentation,
+  MessageSquare,
+  CalendarCheck,
+  TicketIcon,
 } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 
 const menuItems = [
   { name: 'Dashboard', icon: <LayoutDashboard />, path: '/' },
-  { name: 'Produk', icon: <Box />, path: '/produk' },
+  { name: 'Guest', icon: <Box />, path: '/GuestPage' },
   { name: 'Laporan Keuangan', icon: <BarChart2 />, path: '/Report' },
   { name: 'Feedback', icon: <MessageSquare />, path: '/Feedback' },
   { name: 'Users', icon: <Users />, path: '/customer' },
@@ -25,6 +28,10 @@ const menuItems = [
   { name: 'Staff & Shift', icon: <UserCog />, path: '/Staff' },
   { name: 'Reservasi', icon: <CalendarCheck />, path: '/Reservation' },
 
+  { name: 'Reservasi', icon: <CalendarCheck />, path: '/Reservation' },
+  { name: 'Management Kamar', icon: <Bed />, path: '/RoomsPage' },
+  { name: 'Management Event', icon: <Presentation />, path: '/event' },
+  { name: 'Deals', icon: <TicketIcon />, path: '/deals' },
 ]
 
 const accountItems = [

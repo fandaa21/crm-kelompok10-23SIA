@@ -6,6 +6,9 @@ import ReportMoney from "./pages/ReportMoney";
 import Feedback from "./pages/Feedback";
 import StaffShift from "./Staff/StaffShift";
 import Reservation from "./pages/Reservation";
+import RoomsPage from "./pages/RoomsPage";
+import GuestsPage from "./pages/GuestPage";
+import Deals from "./pages/Deals";
 
 export function App() {
   return (
@@ -18,6 +21,9 @@ export function App() {
         <Route path="*" element={<div>Page Not Found</div>} />
         <Route path="/Staff" element={<StaffShift />} />
         <Route path="/Reservation" element={<Reservation />} />
+        <Route path="/RoomsPage" element={<RoomsPage />} />
+        <Route path="/GuestPage" element={<GuestsPage />} />
+        <Route path="/Deals" element={<Deals />} />
       </Route>
 
       <Route element={<LayoutUser />}>
