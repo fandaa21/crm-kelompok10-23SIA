@@ -6,23 +6,30 @@ import {
   Settings,
   LogIn,
   UserPlus,
+  MessageSquare, // untuk Feedback
+  AlertCircle,   // untuk Komplain
+  UserCog,        // untuk Staff (ikon tambahan)
+  CalendarCheck, // ✅ untuk Reservasi
   Bed,
   Presentation,
   MessageSquare,
   CalendarCheck,
+  TicketIcon,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+  
 
 // Menu utama setelah pembersihan
 const menuItems = [
   { name: 'Dashboard', icon: <LayoutDashboard />, path: '/' },
-  { name: 'Produk', icon: <Box />, path: '/produk' },
+  { name: 'Guest', icon: <Box />, path: '/GuestPage' },
   { name: 'Laporan Keuangan', icon: <BarChart2 />, path: '/Report' },
   { name: 'Feedback', icon: <MessageSquare />, path: '/Feedback' },
   { name: 'Reservasi', icon: <CalendarCheck />, path: '/Reservation' },
   { name: 'Management Kamar', icon: <Bed />, path: '/room' },
   { name: 'Management Event', icon: <Presentation />, path: '/event' },
 ];
+
 
 const accountItems = [
   { name: "Sign In", icon: <LogIn size={18} />, path: "/signin" },

@@ -21,6 +21,11 @@ import AboutUsPage from "./User/AboutUsPage";
 import RoomDetailPage from "./User/RoomDetailPage";
 import PublicLayout from "./User/component/PublicLayout";
 import ContactPage from "./User/ContactPage";
+import StaffShift from "./Staff/StaffShift";
+import Reservation from "./pages/Reservation";
+import RoomsPage from "./pages/RoomsPage";
+import GuestsPage from "./pages/GuestPage";
+import Deals from "./pages/Deals";
 
 export function App() {
   return (
@@ -36,6 +41,12 @@ export function App() {
         <Route path="/pelanggan" element={<Customers />} />
         <Route path="/Report" element={<ReportMoney />} />
         <Route path="/Feedback" element={<Feedback />} />
+        <Route path="*" element={<div>Page Not Found</div>} />
+        <Route path="/Staff" element={<StaffShift />} />
+        <Route path="/Reservation" element={<Reservation />} />
+        <Route path="/RoomsPage" element={<RoomsPage />} />
+        <Route path="/GuestPage" element={<GuestsPage />} />
+        <Route path="/Deals" element={<Deals />} />
       </Route>
 
       {/* Layout dan halaman user */}
