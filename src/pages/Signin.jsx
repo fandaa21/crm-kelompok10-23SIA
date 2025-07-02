@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "../supabase";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -8,10 +9,12 @@ export default function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  // 2. Mengubah handleSubmit menjadi fungsi async
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
+    // Validasi dasar tetap di sini
     if (!email.includes("@")) {
       setError("Email tidak valid");
       return;
@@ -22,21 +25,60 @@ export default function Login() {
     }
 
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      navigate("/");
-    }, 1500);
+
+    try {
+      // 3. Proses Login ke Supabase
+      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password,
+      });
+
+      if (authError) {
+        // Jika ada error dari Supabase (misal: password salah), tampilkan pesannya
+        throw authError;
+      }
+
+      // 4. Jika login berhasil, ambil profil untuk mendapatkan role
+      if (authData.user) {
+        // Kode Baru (Lebih Aman)
+        const { data: profiles, error: profileError } = await supabase
+          .from('profiles')
+          .select('role')
+          .eq('id', authData.user.id);
+
+        if (profileError) {
+          throw profileError;
+        }
+        if (!profiles || profiles.length === 0) {
+          // Jika tidak ada profil, berikan pesan error yang jelas
+          throw new Error("Login berhasil, tetapi profil pengguna tidak ditemukan.");
+        }
+
+        const profileData = profiles[0];
+
+        // 5. Arahkan pengguna berdasarkan rolenya
+        if (profileData && profileData.role === 'admin') {
+          navigate("/"); // Arahkan ke dashboard admin
+        } else {
+          navigate("/User"); // Arahkan ke dashboard user biasa
+        }
+      }
+    } catch (error) {
+      setError(error.error_description || error.message);
+    } finally {
+      setLoading(false); // Hentikan loading, baik berhasil maupun gagal
+    }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <form
         onSubmit={handleSubmit}
-        className="bg-white w-full max-w-sm p-10 rounded-xl shadow-xl"
+        className="bg-white w-full max-w-sm p-8 rounded-xl shadow-lg"
       >
         {/* Logo */}
         <div className="flex justify-center mb-6">
-          <img src="/logo.png" alt="logo" className="h-12" />
+          <img src="/logo1.png" alt="logo" className="h-12" />
         </div>
 
         {/* Title */}
@@ -46,17 +88,8 @@ export default function Login() {
 
         {/* Email */}
         <div className="mb-4">
-          <div className="flex items-center border rounded-md px-3 py-2">
-            <svg
-              className="w-5 h-5 text-gray-400 mr-2"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-            >
-              <path d="M4 4h16v16H4z" />
-              <path d="M22 6L12 13 2 6" />
-            </svg>
+          <div className="flex items-center border rounded-md px-3 py-2 focus-within:ring-2 focus-within:ring-amber-400">
+            {/* ... SVG Ikon Email ... */}
             <input
               type="email"
               placeholder="Your email"
@@ -69,18 +102,9 @@ export default function Login() {
         </div>
 
         {/* Password */}
-        <div className="mb-4">
-          <div className="flex items-center border rounded-md px-3 py-2">
-            <svg
-              className="w-5 h-5 text-gray-400 mr-2"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-            >
-              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-            </svg>
+        <div className="mb-6">
+          <div className="flex items-center border rounded-md px-3 py-2 focus-within:ring-2 focus-within:ring-amber-400">
+            {/* ... SVG Ikon Password ... */}
             <input
               type="password"
               placeholder="Password"
@@ -101,18 +125,19 @@ export default function Login() {
         <button
           type="submit"
           disabled={loading}
-          className={`w-full py-2 rounded-md text-white font-medium ${
-            loading
-              ? "bg-amber-300 cursor-not-allowed"
+          className={`w-full py-3 rounded-md text-white font-semibold ${loading
+              ? "bg-gray-400 cursor-not-allowed"
               : "bg-[#b57c51] hover:bg-[#9c6843]"
-          } transition-all`}
+            } transition-all`}
         >
           {loading ? "Loading..." : "Log In"}
         </button>
 
         {/* Forgot Password */}
-        <p className="mt-4 text-sm text-center text-red-600 font-medium cursor-pointer hover:underline">
-          Forgot password?
+        <p className="mt-4 text-sm text-center text-gray-500">
+          <a href="#" className="font-medium text-amber-600 hover:underline">
+            Forgot password?
+          </a>
         </p>
       </form>
     </div>

@@ -17,6 +17,10 @@ import LayoutUser from "./User/component/LayoutUser";
 import UserDashboard from "./User/UserDashboard";
 import RoomReservation from "./User/RoomReservation";
 import UserPage from "./User/UserPage";
+import AboutUsPage from "./User/AboutUsPage";
+import RoomDetailPage from "./User/RoomDetailPage";
+import PublicLayout from "./User/component/PublicLayout";
+import ContactPage from "./User/ContactPage";
 
 export function App() {
   return (
@@ -40,8 +44,12 @@ export function App() {
         <Route path="/User/Reservasi" element={<RoomReservation />} />
       </Route>
 
-      {/* Halaman publik website */}
-      <Route path="/web" element={<UserPage />} />
+      <Route element={<PublicLayout />}>
+        <Route path="/web" element={<UserPage />} />
+        <Route path="/about-us" element={<AboutUsPage />} />
+        <Route path="/room/1" element={<RoomDetailPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+      </Route>
     </Routes>
   );
 }
