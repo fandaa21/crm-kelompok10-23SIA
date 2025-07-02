@@ -1,239 +1,131 @@
-import { useState } from "react";
-import { CheckCircle, XCircle } from "lucide-react";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
-import * as XLSX from "xlsx";
-import jsPDF from "jspdf";
-import "jspdf-autotable";
+// src/pages/RoomManagement.jsx
 
-const initialForm = {
-  number: "",
-  type: "Standard",
-  price: "",
-  status: "Tersedia",
-  facilities: [],
-  cleaningDate: "",
+import React, { useState } from 'react';
+// Impor ikon dari lucide-react yang sudah terpasang
+import { Calendar, User, Users, Minus, Plus, MoreVertical } from 'lucide-react';
+
+// Komponen kecil untuk badge status agar kode lebih rapi
+const StatusBadge = ({ status }) => {
+    const statusStyles = {
+        Available: 'bg-blue-100 text-blue-700',
+        Booked: 'bg-red-100 text-red-700',
+        Reserved: 'bg-green-100 text-green-700',
+    };
+    return (
+        <span className={`px-3 py-1 text-xs font-medium rounded-full ${statusStyles[status] || 'bg-gray-100 text-gray-700'}`}>
+            {status}
+        </span>
+    );
 };
 
-const facilityOptions = ["AC", "TV", "WiFi", "Breakfast", "Minibar"];
+// --- DATA STATIS UNTUK TABEL ---
+const roomsData = [
+    { number: '#045', bedType: 'Double bed', floor: 'Floor - 1', facility: 'AC, Shower, Double bed, towel bathtub, TV', status: 'Available' },
+    { number: '#020', bedType: 'Single bed', floor: 'Floor - 2', facility: 'AC, Shower, Double bed, towel bathtub, TV', status: 'Booked' },
+    { number: '#003', bedType: 'VIP', floor: 'Floor - 1', facility: 'AC, Shower, Double bed, towel bathtub, TV', status: 'Booked' },
+    { number: '#040', bedType: 'VIP', floor: 'Floor - 1', facility: 'AC, Shower, Double bed, towel bathtub, TV', status: 'Reserved' },
+    { number: '#015', bedType: 'Single bed', floor: 'Floor - 1', facility: 'AC, Shower, Double bed, towel bathtub, TV', status: 'Reserved' },
+];
 
-export default function RoomManager() {
-  const [rooms, setRooms] = useState([]);
-  const [form, setForm] = useState(initialForm);
-  const [filterStatus, setFilterStatus] = useState("");
-  const [filterDate, setFilterDate] = useState("");
+const RoomManagement = () => {
+    const [activeTab, setActiveTab] = useState('All room');
+    const roomTabs = ['All room(5)', 'Single', 'Double', 'Triple', 'VIP'];
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleFacilityToggle = (facility) => {
-    setForm((prev) => ({
-      ...prev,
-      facilities: prev.facilities.includes(facility)
-        ? prev.facilities.filter((f) => f !== facility)
-        : [...prev.facilities, facility],
-    }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!form.number || !form.price) return;
-    setRooms([...rooms, { ...form, id: Date.now() }]);
-    setForm(initialForm);
-  };
-
-  const handleDelete = (id) => {
-    setRooms(rooms.filter((room) => room.id !== id));
-  };
-
-  const getStatusChartData = () => {
-    const counts = { Tersedia: 0, Dipesan: 0, "Perlu Dibersihkan": 0 };
-    rooms.forEach((room) => counts[room.status]++);
-    return Object.entries(counts).map(([status, jumlah]) => ({ status, jumlah }));
-  };
-
-  const getTypeChartData = () => {
-    const counts = { Standard: 0, Deluxe: 0, Suite: 0 };
-    rooms.forEach((room) => counts[room.type]++);
-    return Object.entries(counts).map(([type, jumlah]) => ({ type, jumlah }));
-  };
-
-  const exportToExcel = () => {
-    const worksheet = XLSX.utils.json_to_sheet(rooms);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Kamar");
-    XLSX.writeFile(workbook, "DataKamar.xlsx");
-  };
-
-  const exportToPDF = () => {
-    const doc = new jsPDF();
-    const tableColumn = ["Nomor", "Jenis", "Harga", "Status", "Cleaning", "Fasilitas"];
-    const tableRows = rooms.map((room) => [
-      room.number,
-      room.type,
-      room.price,
-      room.status,
-      room.cleaningDate,
-      room.facilities.join(", "),
-    ]);
-    doc.text("Data Kamar Hotel", 14, 15);
-    doc.autoTable({ head: [tableColumn], body: tableRows, startY: 20 });
-    doc.save("DataKamar.pdf");
-  };
-
-  const filteredRooms = rooms.filter((room) => {
     return (
-      (filterStatus ? room.status === filterStatus : true) &&
-      (filterDate ? room.cleaningDate === filterDate : true)
-    );
-  });
-
-  return (
-    <div className="p-6 max-w-6xl mx-auto bg-[#F7F6F3] min-h-screen text-black">
-      <h2 className="text-3xl font-bold mb-6 text-blue-700">Manajemen Kamar Hotel Aryaduta</h2>
-
-      {/* FORM */}
-      <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md mb-10 space-y-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div>
-            <label className="block text-sm font-medium mb-1">Nomor Kamar</label>
-            <input name="number" value={form.number} onChange={handleChange} required placeholder="Contoh: 101"
-              className="border border-[#BD845F] text-black rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-[#BD845F]" />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Jenis Kamar</label>
-            <select name="type" value={form.type} onChange={handleChange}
-              className="border border-[#BD845F] text-black rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-[#BD845F]">
-              <option>Standard</option>
-              <option>Deluxe</option>
-              <option>Suite</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Harga per Malam</label>
-            <input name="price" type="number" value={form.price} onChange={handleChange} required placeholder="Contoh: 750000"
-              className="border border-[#BD845F] text-black rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-[#BD845F]" />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Status Kamar</label>
-            <select name="status" value={form.status} onChange={handleChange}
-              className="border border-[#BD845F] text-black rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-[#BD845F]">
-              <option>Tersedia</option>
-              <option>Dipesan</option>
-              <option>Perlu Dibersihkan</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Tanggal Pembersihan</label>
-            <input name="cleaningDate" type="date" value={form.cleaningDate} onChange={handleChange}
-              className="border border-[#BD845F] text-black rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-[#BD845F]" />
-          </div>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium mb-2">Fasilitas</label>
-          <div className="flex flex-wrap gap-4 text-sm">
-            {facilityOptions.map((facility) => (
-              <label key={facility} className="flex items-center gap-2 text-black">
-                <input
-                  type="checkbox"
-                  checked={form.facilities.includes(facility)}
-                  onChange={() => handleFacilityToggle(facility)}
-                />
-                {facility}
-              </label>
-            ))}
-          </div>
-        </div>
-
-        <button type="submit" className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
-          Tambah Kamar
-        </button>
-      </form>
-
-      {/* FILTER & EXPORT */}
-      {rooms.length > 0 && (
-        <div className="mb-6 flex flex-wrap gap-4 items-center">
-          <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}
-            className="border border-[#BD845F] text-black p-2 rounded focus:ring-2 focus:ring-[#BD845F]">
-            <option value="">Filter Status</option>
-            <option value="Tersedia">Tersedia</option>
-            <option value="Dipesan">Dipesan</option>
-            <option value="Perlu Dibersihkan">Perlu Dibersihkan</option>
-          </select>
-          <input type="date" value={filterDate} onChange={(e) => setFilterDate(e.target.value)}
-            className="border border-[#BD845F] text-black p-2 rounded" />
-          <button onClick={exportToExcel} className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
-            Export Excel
-          </button>
-          <button onClick={exportToPDF} className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
-            Export PDF
-          </button>
-        </div>
-      )}
-
-      {/* CHARTS */}
-      {rooms.length > 0 && (
-        <div className="grid md:grid-cols-2 gap-6 mb-8">
-          <div className="bg-white p-4 rounded shadow-md">
-            <h3 className="text-lg font-semibold mb-2">Status Kamar</h3>
-            <ResponsiveContainer width="100%" height={250}>
-              <BarChart data={getStatusChartData()}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="status" />
-                <YAxis allowDecimals={false} />
-                <Tooltip />
-                <Bar dataKey="jumlah" fill="#3B82F6" />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-
-          <div className="bg-white p-4 rounded shadow-md">
-            <h3 className="text-lg font-semibold mb-2">Jenis Kamar</h3>
-            <ResponsiveContainer width="100%" height={250}>
-              <BarChart data={getTypeChartData()}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="type" />
-                <YAxis allowDecimals={false} />
-                <Tooltip />
-                <Bar dataKey="jumlah" fill="#10B981" />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      )}
-
-      {/* ROOM LIST */}
-      <div className="space-y-4">
-        {filteredRooms.length === 0 ? (
-          <p className="text-gray-500">Tidak ada kamar ditemukan.</p>
-        ) : (
-          filteredRooms.map((room) => (
-            <div key={room.id} className="bg-white p-4 rounded shadow-md">
-              <div className="flex justify-between items-start">
-                <div>
-                  <h3 className="text-xl font-semibold">Kamar {room.number}</h3>
-                  <p><strong>Jenis:</strong> {room.type}</p>
-                  <p><strong>Harga:</strong> Rp{room.price}</p>
-                  <p><strong>Status:</strong> {room.status}</p>
-                  <p><strong>Cleaning:</strong> {room.cleaningDate || "-"}</p>
-                  <p><strong>Fasilitas:</strong> {room.facilities.join(", ") || "-"}</p>
+        <div className="p-6 bg-[#f9fafb] min-h-screen">
+            
+            {/* KARTU FILTER UTAMA */}
+            <div className="bg-white p-6 rounded-2xl shadow-sm">
+                {/* Tabs Tipe Kamar */}
+                <div className="flex items-center space-x-2 border-b pb-4">
+                    {roomTabs.map(tab => (
+                        <button 
+                            key={tab} 
+                            onClick={() => setActiveTab(tab.split('(')[0])}
+                            className={`px-4 py-2 text-sm font-semibold rounded-lg transition ${
+                                activeTab === tab.split('(')[0] ? 'bg-gray-200 text-gray-800' : 'text-gray-500 hover:bg-gray-100'
+                            }`}
+                        >
+                            {tab}
+                        </button>
+                    ))}
                 </div>
-                <button onClick={() => handleDelete(room.id)} className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">Hapus</button>
-              </div>
+
+                {/* Filter Tanggal dan Jumlah Tamu */}
+                <div className="pt-4 grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
+                    {/* Check In */}
+                    <div className="space-y-1">
+                        <label className="text-xs font-medium text-gray-500">Check in</label>
+                        <div className="flex items-center border rounded-lg p-2">
+                            <Calendar size={18} className="text-gray-400" />
+                            <input type="text" defaultValue="Tue, Mar 2" className="text-sm ml-2 w-full bg-transparent focus:outline-none"/>
+                        </div>
+                    </div>
+                     {/* Check Out */}
+                    <div className="space-y-1">
+                        <label className="text-xs font-medium text-gray-500">Check out</label>
+                         <div className="flex items-center border rounded-lg p-2">
+                            <Calendar size={18} className="text-gray-400" />
+                            <input type="text" defaultValue="Wed, Mar 10" className="text-sm ml-2 w-full bg-transparent focus:outline-none"/>
+                        </div>
+                    </div>
+                    {/* Guest Counters */}
+                    <div className="flex items-end gap-4 col-span-1 md:col-span-2">
+                        <div className="space-y-1 w-full">
+                            <label className="text-xs font-medium text-gray-500">Adult</label>
+                            <div className="flex items-center border rounded-lg p-2 justify-between">
+                                <button className="text-gray-500"><Minus size={16}/></button>
+                                <span className="font-bold">1</span>
+                                <button className="text-gray-500"><Plus size={16}/></button>
+                            </div>
+                        </div>
+                         <div className="space-y-1 w-full">
+                            <label className="text-xs font-medium text-gray-500">Children</label>
+                            <div className="flex items-center border rounded-lg p-2 justify-between">
+                                <button className="text-gray-500"><Minus size={16}/></button>
+                                <span className="font-bold">0</span>
+                                <button className="text-gray-500"><Plus size={16}/></button>
+                            </div>
+                        </div>
+                         <button className="bg-[#A86844] text-white px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap h-10">Check availability</button>
+                    </div>
+                </div>
             </div>
-          ))
-        )}
-      </div>
-    </div>
-  );
-}
+
+            {/* TABEL DAFTAR KAMAR */}
+            <div className="mt-8 bg-white rounded-2xl shadow-sm overflow-hidden">
+                <div className="overflow-x-auto">
+                    <table className="w-full text-sm text-left">
+                        <thead className="bg-gray-50 text-gray-600">
+                            <tr>
+                                <th className="p-4 font-semibold">Room number</th>
+                                <th className="p-4 font-semibold">Bed type</th>
+                                <th className="p-4 font-semibold">Room floor</th>
+                                <th className="p-4 font-semibold">Room facility</th>
+                                <th className="p-4 font-semibold">Status</th>
+                                <th className="p-4 font-semibold"></th>
+                            </tr>
+                        </thead>
+                        <tbody className="text-gray-700">
+                            {roomsData.map((room, index) => (
+                                <tr key={index} className="">
+                                    <td className="p-4 font-medium">{room.number}</td>
+                                    <td className="p-4">{room.bedType}</td>
+                                    <td className="p-4">{room.floor}</td>
+                                    <td className="p-4 text-xs max-w-xs truncate">{room.facility}</td>
+                                    <td className="p-4"><StatusBadge status={room.status}/></td>
+                                    <td className="p-4">
+                                        <button className="text-gray-400 hover:text-gray-600"><MoreVertical size={18}/></button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    );
+};
+
+export default RoomManagement;

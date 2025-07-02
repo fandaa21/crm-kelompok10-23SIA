@@ -6,7 +6,6 @@ import Dashboard from "./pages/Dashboard";
 import CustomerManagement from "./pages/CustomerManagement";
 import SalesManagement from "./pages/SalesManagement";
 import Customers from "./pages/Customers";
-import ReportMoney from "./pages/ReportMoney";
 import Feedback from "./pages/Feedback";
 
 // Halaman autentikasi
@@ -21,11 +20,12 @@ import AboutUsPage from "./User/AboutUsPage";
 import RoomDetailPage from "./User/RoomDetailPage";
 import PublicLayout from "./User/component/PublicLayout";
 import ContactPage from "./User/ContactPage";
-import StaffShift from "./Staff/StaffShift";
 import Reservation from "./pages/Reservation";
-import RoomsPage from "./pages/RoomsPage";
 import GuestsPage from "./pages/GuestPage";
 import Deals from "./pages/Deals";
+import RoomManagement from "./pages/RoomManager";
+import ReportMoney from "./pages/ReportMoney";
+import MembershipManagement from "./pages/MembershipManagement";
 
 export function App() {
   return (
@@ -39,12 +39,11 @@ export function App() {
         <Route path="/customer" element={<CustomerManagement />} />
         <Route path="/penjualan" element={<SalesManagement />} />
         <Route path="/pelanggan" element={<Customers />} />
-        <Route path="/Report" element={<ReportMoney />} />
         <Route path="/Feedback" element={<Feedback />} />
-        <Route path="*" element={<div>Page Not Found</div>} />
-        <Route path="/Staff" element={<StaffShift />} />
         <Route path="/Reservation" element={<Reservation />} />
-        <Route path="/RoomsPage" element={<RoomsPage />} />
+        <Route path="/room" element={<RoomManagement />} />
+        <Route path="/report" element={<ReportMoney />} />
+        <Route path="/memberships" element={<MembershipManagement />} />
         <Route path="/GuestPage" element={<GuestsPage />} />
         <Route path="/Deals" element={<Deals />} />
       </Route>

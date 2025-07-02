@@ -1,5 +1,5 @@
 import React from 'react';
-import { BedDouble, LogIn, LogOut } from "lucide-react";
+import { BedDouble, LogIn, LogOut, MoreHorizontal, MoreVertical } from "lucide-react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -33,6 +33,13 @@ const Dashboard = () => {
     { label: "Total", title: "Occupied room", value: 90, icon: <BedDouble size={20} className="text-red-500" /> },
   ];
 
+  const roomData = [
+    { name: 'Single sharing', deals: 2, occupied: 2, total: 30, price: 568 },
+    { name: 'Double sharing', deals: 2, occupied: 2, total: 35, price: 1068 },
+    { name: 'Triple sharing', deals: 0, occupied: 2, total: 25, price: 1568 },
+    { name: 'VIP Suit', deals: 0, occupied: 4, total: 10, price: 2568 },
+  ];
+
   const barData = {
     labels: ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"],
     datasets: [
@@ -43,6 +50,27 @@ const Dashboard = () => {
       },
     ],
   };
+
+  const roomStatusData = {
+    leftColumn: [
+      { label: 'Occupied rooms', value: 104 },
+      { label: 'Clean', value: 90 },
+      { label: 'Dirty', value: 4 },
+      { label: 'Inspected', value: 60 },
+    ],
+    rightColumn: [
+      { label: 'Available rooms', value: 20 },
+      { label: 'Clean', value: 30 },
+      { label: 'Dirty', value: 19 },
+      { label: 'Inspected', value: 30 },
+    ],
+  };
+
+  const customerFeedbackData = [
+    { name: 'Mark', feedback: 'Food could be better.', room: 'A201' },
+    { name: 'Christian', feedback: 'Facilities are not enough for amount paid.', room: 'A101' },
+    { name: 'Alexander', feedback: 'Room cleaning could be better.', room: 'A301' },
+  ];
 
   const barOptions = {
     responsive: true,
@@ -110,6 +138,94 @@ const Dashboard = () => {
           ))}
         </div>
       </div>
+
+      {/* SECTION BARU: Rooms */}
+      <div className="space-y-4">
+        <h2 className="text-lg font-semibold text-gray-700">Rooms</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {roomData.map((room, index) => (
+            <div key={index} className="bg-white rounded-xl shadow p-4 flex flex-col space-y-3">
+              {/* Baris atas: Deals dan ikon ... */}
+              <div className="flex justify-between items-center">
+                {room.deals > 0 ? (
+                  <span className="bg-green-100 text-green-700 text-xs font-semibold px-2 py-1 rounded-md">{room.deals} Deals</span>
+                ) : (
+                  <span></span> // Elemen kosong agar 'justify-between' tetap bekerja
+                )}
+                <button className="text-gray-400 hover:text-gray-600">
+                  <MoreHorizontal size={20} />
+                </button>
+              </div>
+
+              {/* Konten tengah: Nama kamar dan okupansi */}
+              <div className="flex-grow">
+                <p className="font-semibold text-gray-800">{room.name}</p>
+                <p className="text-gray-500 text-sm">
+                  <span className="font-bold text-gray-900">{room.occupied}</span> / {room.total}
+                </p>
+              </div>
+
+              {/* Harga */}
+              <p className="text-xl font-bold text-orange-600">
+                <span className="text-lg align-top">$</span> {room.price.toLocaleString()}
+                <span className="text-sm font-normal text-gray-500">/ day</span>
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+       {/* SECTION BARU: Room Status & Feedback */}
+       <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        {/* Card Room Status (memakan 2 kolom) */}
+        <div className="lg:col-span-2 bg-white rounded-xl shadow p-6">
+          <h3 className="font-bold text-gray-800 mb-4">Room status</h3>
+          <div className="grid grid-cols-2 gap-8">
+            {/* Sub-kolom kiri */}
+            <div className="space-y-3">
+              {roomStatusData.leftColumn.map((item, index) => (
+                <div key={index} className="flex justify-between items-center text-sm">
+                  <span className="text-gray-600">{item.label}</span>
+                  <span className="font-bold text-gray-800">{item.value}</span>
+                </div>
+              ))}
+            </div>
+            {/* Sub-kolom kanan */}
+            <div className="space-y-3">
+              {roomStatusData.rightColumn.map((item, index) => (
+                <div key={index} className="flex justify-between items-center text-sm">
+                  <span className="text-gray-600">{item.label}</span>
+                  <span className="font-bold text-gray-800">{item.value}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Card Customers Feedback (memakan 1 kolom) */}
+        <div className="bg-white rounded-xl shadow p-6">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="font-bold text-gray-800">Customers feedback</h3>
+            <button className="text-gray-400 hover:text-gray-600">
+              <MoreVertical size={20} />
+            </button>
+          </div>
+          <div className="space-y-4">
+            {customerFeedbackData.map((item, index) => (
+              <div key={index} className="border-b pb-3">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <p className="font-semibold text-sm text-gray-800">{item.name}</p>
+                    <p className="text-xs text-gray-500 mt-1">{item.feedback}</p>
+                  </div>
+                  <p className="text-xs text-gray-500 flex-shrink-0 ml-2">{item.room}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

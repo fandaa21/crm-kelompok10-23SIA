@@ -6,14 +6,11 @@ import {
   Settings,
   LogIn,
   UserPlus,
-  MessageSquare, // untuk Feedback
-  AlertCircle,   // untuk Komplain
-  UserCog,        // untuk Staff (ikon tambahan)
-  CalendarCheck, // ✅ untuk Reservasi
+  MessageSquare,   // Cukup satu kali
+  AlertCircle,
+  UserCog,
+  CalendarCheck,   // Cukup satu kali
   Bed,
-  Presentation,
-  MessageSquare,
-  CalendarCheck,
   TicketIcon,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
@@ -27,7 +24,7 @@ const menuItems = [
   { name: 'Feedback', icon: <MessageSquare />, path: '/Feedback' },
   { name: 'Reservasi', icon: <CalendarCheck />, path: '/Reservation' },
   { name: 'Management Kamar', icon: <Bed />, path: '/room' },
-  { name: 'Management Event', icon: <Presentation />, path: '/event' },
+  { name: 'Memberships', icon: <Users />, path: '/memberships' },
 ];
 
 

@@ -1,116 +1,95 @@
-import React, { useEffect, useState } from "react";
-import { CalendarCheck, User, DoorOpen, Ban } from "lucide-react";
+import React, { useState } from 'react';
+import { Filter, MoreVertical, Plus } from 'lucide-react';
 
-const statusMap = {
-  confirmed: { color: "bg-green-100 text-green-700", icon: <DoorOpen className="w-4 h-4" />, label: "Dikonfirmasi" },
-  pending: { color: "bg-yellow-200 text-yellow-800", icon: <CalendarCheck className="w-4 h-4" />, label: "Menunggu" },
-  cancelled: { color: "bg-red-100 text-red-700", icon: <Ban className="w-4 h-4" />, label: "Dibatalkan" },
+// Komponen untuk badge status yang berwarna
+const StatusBadge = ({ status }) => {
+  const styles = {
+    Ongoing: 'bg-blue-100 text-blue-700',
+    Full: 'bg-red-100 text-red-700',
+    Inactive: 'bg-gray-200 text-gray-800',
+    New: 'bg-green-100 text-green-700',
+  };
+  return (
+    <span className={`px-3 py-1 text-xs font-medium rounded-full ${styles[status] || 'bg-gray-200'}`}>
+      {status}
+    </span>
+  );
 };
 
-export default function Reservation() {
-  const [reservations, setReservations] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const [guest, setGuest] = useState("");
-  const [type, setType] = useState("");
-  const [date, setDate] = useState("");
+// --- DATA STATIS (DUMMY) UNTUK DEALS ---
+const initialDeals = [
+  { ref: '#5644', name: 'Family deal', reservationsLeft: 10, endDate: '21/3/23', roomType: 'VIP', status: 'Ongoing' },
+  { ref: '#6112', name: 'Christmas deal', reservationsLeft: 12, endDate: '25/3/23', roomType: 'Single, Double', status: 'Full' },
+  { ref: '#6141', name: 'Family deal', reservationsLeft: 15, endDate: '-', roomType: 'Triple', status: 'Inactive' },
+  { ref: '#6535', name: 'Black Friday', reservationsLeft: 10, endDate: '1/5/23', roomType: 'VIP', status: 'New' },
+];
 
-  useEffect(() => {
-    const savedData = localStorage.getItem("reservations");
-    if (savedData) {
-      setReservations(JSON.parse(savedData));
-    } else {
-      setReservations([
-        { id: 1, guest: "Andi Saputra", type: "Kamar Deluxe", date: "2025-06-20", status: "confirmed" },
-        { id: 2, guest: "Sari Lestari", type: "Ballroom A", date: "2025-07-03", status: "pending" },
-        { id: 3, guest: "Budi Pratama", type: "Meeting Room 2", date: "2025-06-22", status: "cancelled" },
-      ]);
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("reservations", JSON.stringify(reservations));
-  }, [reservations]);
-
-  const handleAddReservation = () => {
-    if (!guest || !type || !date) return alert("Lengkapi semua field!");
-    const newRes = {
-      id: reservations.length + 1,
-      guest,
-      type,
-      date,
-      status: "pending",
-    };
-    setReservations([...reservations, newRes]);
-    setGuest(""); setType(""); setDate(""); setShowModal(false);
-  };
-
-  const handleStatusChange = (id, newStatus) => {
-    const updated = reservations.map((r) =>
-      r.id === id ? { ...r, status: newStatus } : r
-    );
-    setReservations(updated);
-  };
+export default function DealManagement() {
+  const [deals, setDeals] = useState(initialDeals);
+  const [activeTab, setActiveTab] = useState('Ongoing');
+  // State untuk modal bisa ditambahkan nanti jika diperlukan
 
   return (
-    <div className="p-6 space-y-6 font-sans bg-white min-h-screen">
-      <div className="flex items-center gap-3 text-3xl font-bold text-yellow-900">
-        <CalendarCheck className="text-yellow-800 w-8 h-8" />
-        <span>Reservasi Hotel</span>
-      </div>
-      <p className="text-gray-700 max-w-2xl text-sm">
-        Fitur ini mendukung pemesanan kamar, ruang meeting, hingga ballroom secara praktis dan terintegrasi.
-      </p>
-
-      <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-6">
-        {reservations.map((res) => (
-          <div key={res.id} className="rounded-xl border shadow-sm bg-yellow-50 p-4 space-y-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2 font-semibold text-lg text-yellow-900">
-                <User className="w-5 h-5 text-yellow-800" />
-                {res.guest}
-              </div>
-              <select
-                value={res.status}
-                onChange={(e) => handleStatusChange(res.id, e.target.value)}
-                className={`text-xs px-2 py-1 rounded-full ${statusMap[res.status].color}`}
-              >
-                {Object.entries(statusMap).map(([key, val]) => (
-                  <option key={key} value={key}>{val.label}</option>
-                ))}
-              </select>
-            </div>
-            <div className="text-sm text-yellow-900">
-              <p className="font-medium">Tipe Reservasi:</p>
-              <p>{res.type}</p>
-            </div>
-            <div className="text-sm text-yellow-900">
-              <p className="font-medium">Tanggal:</p>
-              <p>{res.date}</p>
-            </div>
-          </div>
-        ))}
+    <div className="p-6 bg-white min-h-screen">
+      {/* Header Halaman */}
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-sm text-gray-500">Deal</h1>
+        <div className="flex items-center gap-2">
+          <button className="flex items-center gap-2 px-4 py-2 text-sm border rounded-lg hover:bg-gray-50">
+            <Filter size={16} className="text-gray-600" />
+            <span>Filter</span>
+          </button>
+          <button className="flex items-center gap-2 px-4 py-2 text-sm text-white bg-blue-600 rounded-lg hover:bg-blue-700">
+            <Plus size={16} />
+            <span>Add deal</span>
+          </button>
+        </div>
       </div>
 
-      <div className="flex justify-end">
-        <button onClick={() => setShowModal(true)} className="bg-yellow-800 text-white px-4 py-2 rounded-lg hover:bg-yellow-900 transition">
-          + Tambah Reservasi
+      {/* Kontrol Tabs */}
+      <div className="flex items-center border-b mb-6">
+        <button
+          onClick={() => setActiveTab('Ongoing')}
+          className={`px-4 py-2 text-sm font-semibold transition-colors ${activeTab === 'Ongoing' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-gray-400'}`}
+        >
+          Ongoing
+        </button>
+        <button
+          onClick={() => setActiveTab('Finished')}
+          className={`px-4 py-2 text-sm font-semibold transition-colors ${activeTab === 'Finished' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-gray-400'}`}
+        >
+          Finished
         </button>
       </div>
 
-      {showModal && (
-        <div className="fixed inset-0 backdrop-blur-sm bg-white/30 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-xl w-full max-w-md shadow-lg space-y-4">
-            <h2 className="text-xl font-bold text-yellow-900">Form Tambah Reservasi</h2>
-            <input type="text" placeholder="Nama Tamu" value={guest} onChange={(e) => setGuest(e.target.value)} className="w-full border px-3 py-2 rounded" />
-            <input type="text" placeholder="Tipe Reservasi" value={type} onChange={(e) => setType(e.target.value)} className="w-full border px-3 py-2 rounded" />
-            <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="w-full border px-3 py-2 rounded" />
-            <div className="flex justify-end gap-2">
-              <button onClick={() => setShowModal(false)} className="px-3 py-1 border rounded text-yellow-900">Batal</button>
-              <button onClick={handleAddReservation} className="px-3 py-1 bg-yellow-800 text-white rounded hover:bg-yellow-900">Simpan</button>
-            </div>
-          </div>
-        </div>
-      )}
+      <table className="w-full text-sm text-left">
+        <thead className="bg-gray-50/70 text-gray-500 uppercase text-xs border-b border-gray-200">
+          <tr>
+            <th className="px-6 py-4 font-medium">Room type</th>
+            <th className="px-6 py-4 font-medium">Deals</th>
+            <th className="px-6 py-4 font-medium">Cancellation policy</th>
+            <th className="px-6 py-4 font-medium">Deal price</th>
+            <th className="px-6 py-4 font-medium">Rate</th>
+            <th className="px-6 py-4 font-medium">Availability</th>
+            <th className="px-6 py-4"></th>
+          </tr>
+        </thead>
+        <tbody className="text-gray-800">
+          {deals.map((deal) => ( // <-- Gunakan variabel 'deals' dari state
+            <tr key={deal.ref} className="border-b-0 hover:bg-gray-50">
+              <td className="px-6 py-4 font-medium text-gray-900">{deal.ref}</td>
+              <td className="px-6 py-4">{deal.name}</td>
+              <td className="px-6 py-4">{deal.reservationsLeft}</td>
+              <td className="px-6 py-4">{deal.endDate}</td>
+              <td className="px-6 py-4">{deal.roomType}</td>
+              <td className="px-6 py-4"><StatusBadge status={deal.status} /></td>
+              <td className="px-6 py-4 text-right">
+                <button className="text-gray-400 hover:text-gray-600"><MoreVertical size={18} /></button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
