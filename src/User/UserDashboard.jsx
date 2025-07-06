@@ -1,109 +1,105 @@
-// Ganti seluruh isi file UserDashboard.jsx dengan kode ini
-
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabase';
 import { FaCrown, FaStar, FaUser, FaEdit } from 'react-icons/fa';
-import { HiOutlineCalendarDays, HiOutlineArrowRight } from 'react-icons/hi2';
+import { HiOutlineArrowRight } from 'react-icons/hi2';
 
-// Komponen kecil untuk memilih ikon berdasarkan level
+// Icon Membership dinamis dalam bubble 3D
 const MembershipIcon = ({ level }) => {
-    if (level === 'ELITE') {
-        return <FaCrown className="text-yellow-400 text-2xl" />;
-    }
-    if (level === 'PREFERRED') {
-        return <FaStar className="text-blue-400 text-2xl" />;
-    }
-    // Default icon
-    return <FaUser className="text-gray-400 text-2xl" />;
+  const iconClass = 'text-3xl';
+  let icon, bg, ring;
+
+  if (level === 'ELITE') {
+    icon = <FaCrown className={`${iconClass} text-yellow-400`} />;
+    bg = 'bg-yellow-50';
+    ring = 'ring-yellow-300';
+  } else if (level === 'PREFERRED') {
+    icon = <FaStar className={`${iconClass} text-blue-400`} />;
+    bg = 'bg-blue-50';
+    ring = 'ring-blue-300';
+  } else {
+    icon = <FaUser className={`${iconClass} text-gray-400`} />;
+    bg = 'bg-gray-50';
+    ring = 'ring-gray-300';
+  }
+
+  return (
+    <div className={`w-14 h-14 flex items-center justify-center rounded-full shadow-xl ring-2 ${bg} ${ring}`}>
+      {icon}
+    </div>
+  );
 };
 
-
 export default function UserDashboard() {
-    const [profile, setProfile] = useState(null);
-    const [loading, setLoading] = useState(true);
+  const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchProfile = async () => {
-            setLoading(true);
-            // 1. Ambil data sesi user yang sedang login
-            const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', session.user.id)
+          .single();
 
-            if (sessionError) {
-                console.error('Error getting session:', sessionError);
-                setLoading(false);
-                return;
-            }
+        if (!error) setProfile(data);
+      }
+      setLoading(false);
+    };
 
-            if (session) {
-                // 2. Gunakan ID user dari sesi untuk mengambil data dari tabel 'profiles'
-                const { data: profileData, error: profileError } = await supabase
-                    .from('profiles')
-                    .select('*')
-                    .eq('id', session.user.id)
-                    .single(); // .single() untuk mengambil satu baris data saja
+    fetchProfile();
+  }, []);
 
-                if (profileError) {
-                    console.error('Error fetching profile:', profileError);
-                } else {
-                    setProfile(profileData);
-                }
-            }
-            setLoading(false);
-        };
+  if (loading) return <div className="p-6 text-gray-600">Loading profile...</div>;
+  if (!profile) return <div className="p-6 text-red-500">Profile tidak ditemukan.</div>;
 
-        fetchProfile();
-    }, []);
+  return (
+    <div className="space-y-10 pb-20 px-4 md:px-10 lg:px-20">
 
-    // Tampilkan pesan loading jika data belum siap
-    if (loading) {
-        return <div className="p-6">Loading profile...</div>;
-    }
-    
-    // Tampilkan pesan jika profil tidak ditemukan
-    if (!profile) {
-        return <div className="p-6">Could not load user profile. Please try again later.</div>;
-    }
-
-
-    return (
-        <div className="space-y-16 pb-20">
-            {/* ... Bagian Hero Banner tidak berubah ... */}
-            <section className="relative h-[400px] md:h-[400px] overflow-hidden rounded-3xl shadow-xl border border-[#A86844]/30">
-                {/* ... (sama seperti sebelumnya) ... */}
-            </section>
-
-            {/* -- AWAL MODIFIKASI: Welcome Profile Section -- */}
-            <section className="bg-white/70 backdrop-blur-xl border border-[#A86844]/20 rounded-3xl shadow-lg p-8 md:p-12 flex flex-col md:flex-row items-start md:items-center justify-between space-y-6 md:space-y-0">
-                <div className="space-y-4">
-                    <div className="flex items-center space-x-3">
-                        {/* Ikon dinamis berdasarkan level membership */}
-                        <MembershipIcon level={profile.level_membership} />
-                        <h2 className="text-3xl font-serif font-bold text-[#A86844]">{profile.level_membership || 'Guest'}</h2>
-                    </div>
-                    
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-                        <div>
-                            <p className="text-sm text-gray-500">Nama</p>
-                            <p className="text-lg font-semibold">{profile.nama_lengkap || 'User'}</p>
-                        </div>
-                        <div>
-                            <p className="text-sm text-gray-500">Member Sejak</p>
-                            {/* Format tanggal menjadi lebih mudah dibaca */}
-                            <p className="text-lg font-semibold">{new Date(profile.created_at).toLocaleDateString('id-ID', { year: 'numeric', month: 'long' })}</p>
-                        </div>
-                    </div>
-                </div>
-                <button className="flex items-center space-x-2 bg-[#A86844] hover:bg-[#8f5e3b] text-white px-5 py-2 rounded-full shadow-lg transition">
-                    <FaEdit />
-                    <span>Edit Profil</span>
-                </button>
-            </section>
-            {/* -- AKHIR MODIFIKASI -- */}
-
-            {/* ... Bagian Promo & Penawaran tidak berubah ... */}
-            <section className="space-y-6">
-                 {/* ... (sama seperti sebelumnya) ... */}
-            </section>
+      {/* Header dengan Efek 3D */}
+      <section className="bg-white  rounded-3xl shadow-2xl px-6 py-10 relative z-0 hover:shadow-[0_10px_30px_rgba(0,0,0,0.1)] transition-shadow">
+        <div className="absolute top-6 right-6">
+          <button className="bg-[#A86844] hover:bg-[#8f5e3b] text-white p-2 rounded-full shadow-md">
+            <FaEdit />
+          </button>
         </div>
-    );
+
+        <div className="flex items-center space-x-5">
+          <MembershipIcon level={profile.level_membership} />
+          <div>
+            <h2 className="text-xl font-bold text-[#4e3b2f] font-serif drop-shadow-sm">
+              {profile.nama_lengkap || 'Guest'}
+            </h2>
+            <p className="text-sm text-gray-500 capitalize">
+              {profile.level_membership || 'Guest'} Member
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 text-sm text-gray-600">
+          <div>
+            <p className="font-medium text-gray-500">Email</p>
+            <p className="text-gray-800">{profile.email || '-'}</p>
+          </div>
+          <div>
+            <p className="font-medium text-gray-500">Bergabung Sejak</p>
+            <p className="text-gray-800">
+              {new Date(profile.created_at).toLocaleDateString('id-ID', { year: 'numeric', month: 'long' })}
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Promo Placeholder */}
+      <section className="bg-white rounded-3xl shadow-xl px-6 py-8 text-center hover:shadow-2xl transition">
+        <h3 className="text-lg font-semibold text-[#4e3b2f]">Promo & Penawaran Spesial</h3>
+        <p className="text-sm text-gray-600 mt-2">Segera hadir... kami sedang menyiapkan penawaran terbaik untuk Anda!</p>
+        <button className="mt-4 inline-flex items-center gap-2 bg-[#A86844] text-white px-5 py-2 rounded-full hover:bg-[#8f5e3b] transition">
+          Lihat Penawaran <HiOutlineArrowRight size={18} />
+        </button>
+      </section>
+
+    </div>
+  );
 }

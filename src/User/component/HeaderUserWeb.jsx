@@ -14,7 +14,7 @@ const HeaderUserWeb = () => {
 
       {/* Kolom Tengah: Navigasi */}
       <nav className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center gap-8 text-white uppercase tracking-wider text-sm">
-        <Link to="/web" className="hover:text-gray-300 transition">Home</Link>
+        <Link to="/" className="hover:text-gray-300 transition">Home</Link>
         <Link to="/about-us" className="hover:text-gray-300 transition">About Us</Link>
         <Link to="/room/1" className="hover:text-gray-300 transition">Check In - Check Out</Link>
         <Link to="/contact" className="hover:text-gray-300 transition">Contact Us</Link>

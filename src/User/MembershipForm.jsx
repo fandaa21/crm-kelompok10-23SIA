@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { supabase } from '../supabase';
+import { toast } from 'react-hot-toast';
 
 const MembershipForm = ({ onBack, selectedLevel }) => {
   const [formData, setFormData] = useState({
@@ -36,13 +37,23 @@ const handleSubmit = async (e) => {
         setIsLoading(false); // Selesai loading
 
         if (error) {
-            alert('Terjadi kesalahan: ' + error.message);
+            toast.error('Terjadi kesalahan: ' + error.message);
         } else {
-            alert('Pendaftaran berhasil! Terima kasih telah bergabung.');
-            // Kosongkan form setelah berhasil
-            setFormData({ firstName: '', lastName: '', email: '', address: '', message: '' });
-            // Kembali ke halaman sebelumnya
-            onBack();
+            toast.success('Pendaftaran berhasil! Terima kasih telah bergabung.');
+        
+            // ✅ Kosongkan form
+            setFormData({
+                firstName: '',
+                lastName: '',
+                email: '',
+                address: '',
+                message: '',
+            });
+        
+            // ✅ Kembali ke halaman sebelumnya
+            if (typeof onBack === 'function') {
+                onBack();
+            }
         }
     };
 

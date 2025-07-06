@@ -35,7 +35,7 @@ const FooterUserWeb = () => {
                         </h4>
                         <ul className="space-y-3 text-sm">
                             <li className="flex items-center gap-2 hover:text-white transition">
-                                <FaChevronRight size={10} /> <a href="/web">Home</a>
+                                <FaChevronRight size={10} /> <a href="/">Home</a>
                             </li>
                             <li className="flex items-center gap-2 hover:text-white transition">
                                 <FaChevronRight size={10} /> <a href="/about-us">About Us</a>

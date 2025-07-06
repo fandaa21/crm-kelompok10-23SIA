@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import toast from "react-hot-toast";
+import { supabase } from '../supabase';
 import { HiOutlineCalendar, HiOutlineUser, HiOutlineChevronDown, HiOutlineCheckCircle } from 'react-icons/hi2'
 
 const RoomReservation = () => {
@@ -16,18 +18,37 @@ const RoomReservation = () => {
     setForm({ ...form, [name]: value })
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    alert('Reservasi berhasil dikirim! Kami akan menghubungi Anda segera.')
-    setForm({
-      name: '',
-      email: '',
-      checkIn: '',
-      checkOut: '',
-      guests: 1,
-      roomType: '',
-    })
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    const { name, email, checkIn, checkOut, guests, roomType } = form;
+  
+    const { error } = await supabase.from("reservations").insert([
+      {
+        name,
+        email,
+        check_in: checkIn,
+        check_out: checkOut,
+        guests,
+        room_type: roomType,
+      },
+    ]);
+  
+    if (error) {
+      toast.error("Gagal mengirim reservasi.");
+      console.error(error);
+    } else {
+      toast.success("Reservasi berhasil dikirim!");
+      setForm({
+        name: "",
+        email: "",
+        checkIn: "",
+        checkOut: "",
+        guests: 1,
+        roomType: "",
+      });
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#FAFAFA]">
@@ -62,7 +83,7 @@ const RoomReservation = () => {
                 onChange={handleChange}
                 required
                 className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-[#A86844] focus:border-[#A86844] transition shadow-sm"
-                placeholder="Andi Putra"
+                placeholder="name"
               />
             </div>
             <div>
@@ -74,7 +95,7 @@ const RoomReservation = () => {
                 onChange={handleChange}
                 required
                 className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-[#A86844] focus:border-[#A86844] transition shadow-sm"
-                placeholder="andi.putra@example.com"
+                placeholder="email.com"
               />
             </div>
             <div>

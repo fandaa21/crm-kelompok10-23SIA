@@ -26,16 +26,19 @@ import Deals from "./pages/Deals";
 import RoomManagement from "./pages/RoomManager";
 import ReportMoney from "./pages/ReportMoney";
 import MembershipManagement from "./pages/MembershipManagement";
+import { Toaster } from 'react-hot-toast';
 
 export function App() {
   return (
+    <>
+    <Toaster position="top-right" reverseOrder={false} />
     <Routes>
       {/* Halaman login */}
       <Route path="/signin" element={<Login />} />
 
       {/* Layout dan halaman admin */}
       <Route element={<MainLayout />}>
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/customer" element={<CustomerManagement />} />
         <Route path="/penjualan" element={<SalesManagement />} />
         <Route path="/pelanggan" element={<Customers />} />
@@ -55,12 +58,13 @@ export function App() {
       </Route>
 
       <Route element={<PublicLayout />}>
-        <Route path="/web" element={<UserPage />} />
+        <Route path="/" element={<UserPage />} />
         <Route path="/about-us" element={<AboutUsPage />} />
         <Route path="/room/1" element={<RoomDetailPage />} />
         <Route path="/contact" element={<ContactPage />} />
       </Route>
     </Routes>
+    </>
   );
 }
 

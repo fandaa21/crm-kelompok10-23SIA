@@ -1,8 +1,11 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+
+const ADMIN_USER = { email: 'admin@hotel.com', password: 'admin', role: 'admin' };
+const NORMAL_USER = { email: 'user@hotel.com', password: 'user', role: 'user' };
 
 export default function Login() {
-  const navigate = useNavigate();
+  const { login } = useAuth(); // Ambil fungsi login dari context
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -11,23 +14,21 @@ export default function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setError("");
-
-    if (!email.includes("@")) {
-      setError("Email tidak valid");
-      return;
-    }
-    if (password.length < 6) {
-      setError("Password minimal 6 karakter");
-      return;
-    }
-
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      navigate("/");
-    }, 1500);
-  };
 
+    setTimeout(() => { // Kita tetap pakai setTimeout untuk efek loading
+      if (email === ADMIN_USER.email && password === ADMIN_USER.password) {
+          login(ADMIN_USER); // Panggil fungsi login dengan data admin
+      } else if (email === NORMAL_USER.email && password === NORMAL_USER.password) {
+          login(NORMAL_USER); // Panggil fungsi login dengan data user
+      } else {
+          setError("Email atau password salah.");
+      }
+      setLoading(false);
+  }, 1000);
+};
+
+  
   return (
     <div className="min-h-screen flex items-center justify-center bg-white px-4">
       <form
