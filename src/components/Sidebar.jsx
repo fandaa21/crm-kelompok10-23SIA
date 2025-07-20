@@ -24,6 +24,7 @@ const menuItems = [
   { name: 'Reservasi', icon: <CalendarCheck />, path: '/Reservation' },
   { name: 'Management Kamar', icon: <Bed />, path: '/room' },
   { name: 'Memberships', icon: <Users />, path: '/memberships' },
+  { name: 'Prediksi Loyalitas', icon: <BarChart2 />, path: '/loyalty-prediction' },
 ];
 
 

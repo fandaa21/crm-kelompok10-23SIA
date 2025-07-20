@@ -27,6 +27,8 @@ import RoomManagement from "./pages/RoomManager";
 import ReportMoney from "./pages/ReportMoney";
 import MembershipManagement from "./pages/MembershipManagement";
 import { Toaster } from 'react-hot-toast';
+import LoyaltyPrediction from "./pages/LoyaltyPredictionDashboard";
+import LoyaltyPredictionDashboard from "./pages/LoyaltyPredictionDashboard";
 
 export function App() {
   return (
@@ -47,6 +49,7 @@ export function App() {
         <Route path="/room" element={<RoomManagement />} />
         <Route path="/report" element={<ReportMoney />} />
         <Route path="/memberships" element={<MembershipManagement />} />
+        <Route path="/loyalty-prediction" element={<LoyaltyPredictionDashboard/>} />
         <Route path="/GuestPage" element={<GuestsPage />} />
         <Route path="/Deals" element={<Deals />} />
       </Route>
